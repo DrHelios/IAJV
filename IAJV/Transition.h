@@ -1,8 +1,10 @@
 #pragma once
-#include "People.h"
 #include "GameState.h"
+
+class People;
+
 class Transition
 {
 	public:
-		virtual bool ReturnValue(const People &p, const GameState &gm) = 0;
+		virtual bool ReturnValue(const People& p, const GameState& gm) const = 0;
 };

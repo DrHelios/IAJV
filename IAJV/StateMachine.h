@@ -1,5 +1,6 @@
 #pragma once
 #include "States.h"
+
 class StateMachine
 {
 private:
@@ -10,23 +11,24 @@ public:
 	StateMachine(States* start) : begin(start), current_states(start) { }
 	~StateMachine() { delete begin; }
 
-	States* GetBeginState()const { return begin; };
+	States* GetBeginState() const { return begin; };
 
-	States* GetCurrentState()const { return current_states; };
+	States* GetCurrentState() const { return current_states; };
 
 	void SetCurrentState(States* newCurrentState) { current_states = newCurrentState; }
 
-	void ProcessState(const People &p, const GameState &gs)
+	/*void ProcessState(const People &p, const GameState &gs)
 	{
-		States* currentState = this->GetCurrentState();
-		for (const std::pair<Transition*, States*> &list : currentState->GetTransitionList())
+		
+		for (const std::pair<const Transition*, States*> &list : current_states->GetTransitionList())
 		{
-			Transition* tmp = list.first;
+			const  Transition* tmp = list.first;
 			if (tmp->ReturnValue(p, gs))
 			{
-				SetCurrentState(list.second);
+				SetCurrentState(list.second); 
+				current_states = list.second;
 			}
 		}
-	}
+	}*/
 };
 

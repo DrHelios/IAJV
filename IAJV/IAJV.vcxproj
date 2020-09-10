@@ -148,6 +148,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="People.h" />
+    <ClInclude Include="Position.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="Transition.h" />

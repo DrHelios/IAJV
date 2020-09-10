@@ -1,5 +1,7 @@
 #pragma once
 #include "StateMachine.h"
+#include "Position.h"
+
 class People
 {
 private:

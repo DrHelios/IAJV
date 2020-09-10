@@ -13,7 +13,7 @@ void CreateStateMachineForPeople(People &p)
 	States* moving = new States(ST_MOVING);
 	Transition* transition = new IdleToMove(); //"gamestate", "condition"
 	idle->AddTransition(transition, moving);
-	if (p.GetStateMachine()->GetCurrentState->GetTransitionList.size() == 0) p.CreateStateMachine(idle);
+	if (p.GetStateMachine()->GetCurrentState()->GetTransitionList().size() == 0) p.CreateStateMachine(idle);
 }
 void DestroyStateMachineForPeople(People &p) { p.DestroyStateMachine(); }
 
