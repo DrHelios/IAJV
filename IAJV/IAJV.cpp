@@ -3,18 +3,67 @@
 
 #include <iostream>
 
-int main()
+using namespace std;
+class States 
 {
-    std::cout << "Hello World!\n";
+	vector<<pair<Transition, States>> trans;
+};
+
+class StateMachine
+{
+	enum StatesEnum
+	{
+		ST_IDLE,
+		ST_MOVING,
+		ST_GATHER,
+		ST_FILLING,
+		ST_FLEE,
+		ST_DEATH
+	};
+	States states;
+
+	StateMachine() {}
+	StateMachine(States s) {}
+
+	void CreateStateMachine() 
+	{
+		States* idle = new States(ST_IDLE);
+		States* moving = new States(ST_MOVING);
+		Transition* transition = new Transition();
+		idle->AddTransition(transition, moving);
+	}
+
+	void ProcessState()
+	{
+
+	}
+};
+
+class Transition
+{
+		void AddTransition();
+		void Transition_isTrue();
+
+};
+
+class People
+{
+	enum Job
+	{
+		WOODWORKER,
+		SOLDIER
+	};
+	int quantityInPocket;
+	int maxQtInPocket;
+	Job job;
+
+	People() { job = Job::WOODWORKER;  quantityInPocket = 0;  maxQtInPocket = 100; }
+	People(Job work, int pocket, int maxPocket) : job(work), quantityInPocket(pocket), maxQtInPocket(maxPocket) { }
+};
+// créer classe stateMachine , transition, character
+// enum job ----> enum action pour chaque job , diff action globale
+
+int main()
+{	
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
