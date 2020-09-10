@@ -2,68 +2,163 @@
 //
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
+
+struct Position {
+	float x, y;
+	bool operator==(const Position& p) { return (x == p.x && y == p.y); }
+};
+
+struct GameState
+{
+	int Stock, raffinedStock, numberOfHouses,maxQtInPocket, qtToBuild = 1000;
+	Position beginPos, forestPos, stockPos, buildPos;
+};
+
+class Transition
+{ 
+	public:
+		virtual bool ReturnValue(People p, GameState gm) = 0;
+};
+
+#pragma region Transitions
+class IdleToMove : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (gm.Stock != gm.qtToBuild);}
+};
+
+class MoveToGather : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.forestPos); }
+};
+
+class GatherToMove : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (p.GetQuantityInPocket() == gm.maxQtInPocket); }
+};
+
+class MoveToStock : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.stockPos); }
+};
+
+class StockToIdle : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.beginPos); }
+};
+
+class IdleToCrafthouse : Transition
+{
+	public:
+		bool ReturnValue(People p, GameState gm) { return (gm.Stock == gm.qtToBuild); }
+};
+
+#pragma endregion 
+
 class States 
 {
-	vector<<pair<Transition, States>> trans;
+	private:
+		enum possibleStates { ST_IDLE, ST_MOVING, ST_GATHER, ST_FILLING, ST_FLEE, ST_DEATH };
+		std::vector<std::pair<Transition*, States*>> transistionList;
+	public: 
+		States() : transistionList() {}
+		States(possibleStates state) : transistionList() {}
+		~States() 
+		{ 
+			for (auto t : transistionList) 
+			{
+				delete t.first;
+				if(t.second != nullptr) delete t.second;
+			} 
+			transistionList.clear();
+		}
+		std::vector<std::pair<Transition*, States*>> GetTransitionList() { return transistionList; }
+
+		// Ajoute une transition à la liste des transition
+		void AddTransition(Transition* transitionToUpdateStates, States* targetStates) { transistionList.push_back(std::make_pair(transitionToUpdateStates, targetStates)); }
 };
 
 class StateMachine
 {
-	enum StatesEnum
-	{
-		ST_IDLE,
-		ST_MOVING,
-		ST_GATHER,
-		ST_FILLING,
-		ST_FLEE,
-		ST_DEATH
-	};
-	States states;
+	private:
+		States* begin;
+		States* current_states;
+	public:
+		StateMachine() : begin(), current_states() {}
+		StateMachine(States* start) : begin(start),current_states(start) { }
+		~StateMachine() { delete begin; }
+	
+		States* GetBeginState() { return begin; };
 
-	StateMachine() {}
-	StateMachine(States s) {}
+		States* GetCurrentState() {	return current_states; };
 
-	void CreateStateMachine() 
-	{
-		States* idle = new States(ST_IDLE);
-		States* moving = new States(ST_MOVING);
-		Transition* transition = new Transition();
-		idle->AddTransition(transition, moving);
-	}
+		States* SetCurrentState(States* newCurrentState) { current_states = newCurrentState; }
 
-	void ProcessState()
-	{
-
-	}
+		void ProcessState()
+		{
+			States* currentState = this->GetCurrentState();
+			for (auto  list : currentState->GetTransitionList.size())
+			{
+				if(list.first.ReturnValue(stock > 50))
+				{
+					SetCurrentState(list.second);
+				}
+			}
+		}
 };
 
-class Transition
+class Job
 {
-		void AddTransition();
-		void Transition_isTrue();
+	private:
+		std::string label;
+		StateMachine* state_machine;
+	public:
+		Job() : label("woodworker") { }
+		Job(std::string name) : label(name) { }
+
+		void CreateStateMachine()
+		{
+			States* idle = new States(ST_IDLE);
+			States* moving = new States(ST_MOVING);
+			Transition* transition = new Transition("gamestate", "condition");
+			idle->AddTransition(transition, moving);
+			if (state_machine->GetCurrentState->GetTransitionList.size() == 0) state_machine = new StateMachine(idle);
+		}
+		void Destroy(){	delete state_machine; }
 
 };
 
 class People
 {
-	enum Job
-	{
-		WOODWORKER,
-		SOLDIER
-	};
-	int quantityInPocket;
-	int maxQtInPocket;
-	Job job;
-
-	People() { job = Job::WOODWORKER;  quantityInPocket = 0;  maxQtInPocket = 100; }
-	People(Job work, int pocket, int maxPocket) : job(work), quantityInPocket(pocket), maxQtInPocket(maxPocket) { }
+	private:
+		Position pos{0.f,0.f};
+		int quantityInPocket;
+		Job job;
+	public:
+		People() { job = Job();  quantityInPocket = 0;}
+		People(Job work, int pocket) : job(work), quantityInPocket(pocket) { }
+		Position GetPosition() { return pos; }
+		int GetQuantityInPocket() { return quantityInPocket; }
 };
-// créer classe stateMachine , transition, character
-// enum job ----> enum action pour chaque job , diff action globale
+// créer classe stateMachine , transition, people
+// enum job ----> enum action pour chaque job --> différentes actions possibles
 
 int main()
 {	
+	try 
+	{
+		
+	} 
+	catch (std::exception e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 	return 0;
 }
