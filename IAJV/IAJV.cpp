@@ -20,6 +20,7 @@ struct GameState
 class Transition
 { 
 	public:
+		Transition() {}
 		virtual bool ReturnValue(People p, GameState gm) = 0;
 };
 
@@ -61,11 +62,12 @@ class IdleToCrafthouse : Transition
 };
 
 #pragma endregion 
+enum possibleStates { ST_IDLE, ST_MOVING, ST_GATHER, ST_FILLING, ST_FLEE, ST_DEATH };
+enum craftHouseState {ST_CRAFTIDLE, ST_RAFFINE, ST_BUILD, ST_DONE};
 
 class States 
 {
 	private:
-		enum possibleStates { ST_IDLE, ST_MOVING, ST_GATHER, ST_FILLING, ST_FLEE, ST_DEATH };
 		std::vector<std::pair<Transition*, States*>> transistionList;
 	public: 
 		States() : transistionList() {}
@@ -104,9 +106,10 @@ class StateMachine
 		void ProcessState()
 		{
 			States* currentState = this->GetCurrentState();
-			for (auto  list : currentState->GetTransitionList.size())
+			for (auto list : currentState->GetTransitionList())
 			{
-				if(list.first.ReturnValue(stock > 50))
+				Transition* tmp = list.first;
+				if(tmp.ReturnValue())
 				{
 					SetCurrentState(list.second);
 				}
@@ -127,7 +130,7 @@ class Job
 		{
 			States* idle = new States(ST_IDLE);
 			States* moving = new States(ST_MOVING);
-			Transition* transition = new Transition("gamestate", "condition");
+			Transition* transition = new Transition(); //"gamestate", "condition"
 			idle->AddTransition(transition, moving);
 			if (state_machine->GetCurrentState->GetTransitionList.size() == 0) state_machine = new StateMachine(idle);
 		}
