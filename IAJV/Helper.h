@@ -3,3 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdlib.h>
+#include <cmath>
+#include <cassert>

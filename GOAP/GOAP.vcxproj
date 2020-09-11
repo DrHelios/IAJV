@@ -147,17 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="AllEffects.cpp" />
     <ClCompile Include="GOAP.cpp" />
+    <ClCompile Include="AllPrecondtions.cpp" />
+    <ClCompile Include="Solver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChopWoodAction.h" />
-    <ClInclude Include="effects.h" />
-    <ClInclude Include="effectsVirtual.h" />
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="Condition.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="AllEffects.h" />
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="GoapAction.h" />
     <ClInclude Include="People.h" />
-    <ClInclude Include="preconditions.h" />
-    <ClInclude Include="preconditionsVirtual.h" />
+    <ClInclude Include="Precondition.h" />
+    <ClInclude Include="AllPrecondtions.h" />
+    <ClInclude Include="Solver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,2 +1,2 @@
 #pragma once
-enum Condition { P_WOOD, P_PEOPLE, P_DEFAULT };
+enum Condition { P_ENOUGHWOOD, P_PEOPLE, P_DEFAULT, P_POCKETSFULL, P_ENOUGHTREES };

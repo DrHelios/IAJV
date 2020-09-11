@@ -1,43 +1,161 @@
 #pragma once
 #include "Transition.h"
-class IdleToMove : public Transition
+class IdleToFinish : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p , const GameState& gm) const { return (gm.Stock != gm.qtToBuild); }
-	virtual ~IdleToMove() {}
+	IdleToFinish();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~IdleToFinish();
 };
 
-class MoveToGather : public Transition
+class IdleToMoving : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p, const GameState& gm) const { return (p.GetPosition() == gm.forestPos); }
-	virtual ~MoveToGather() {}
+	IdleToMoving();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~IdleToMoving();
 };
 
-class GatherToMove : public Transition
+class MovingToGather : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p, const GameState& gm) const { return (p.GetQuantityInPocket() == gm.maxQtInPocket); }
-	virtual ~GatherToMove() {}
+	MovingToGather();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~MovingToGather();
 };
 
-class MoveToStock : public Transition
+class GatherToMoving : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p, const GameState& gm) const { return (p.GetPosition() == gm.stockPos); }
-	virtual ~MoveToStock() {}
+	GatherToMoving();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~GatherToMoving();
+};
+
+class MovingToFlee : public Transition
+{
+public:
+	MovingToFlee();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~MovingToFlee();
+};
+
+class FleeToDeath : public Transition
+{
+public:
+	FleeToDeath();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~FleeToDeath();
+};
+
+class FleeToGather : public Transition
+{
+public:
+	FleeToGather();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~FleeToGather();
+};
+
+class FleeToStock : public Transition
+{
+public:
+	FleeToStock();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~FleeToStock();
+};
+
+class FleeToMoving : public Transition
+{
+public:
+	FleeToMoving();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~FleeToMoving();
+};
+
+class MovingToStock : public Transition
+{
+public:
+	MovingToStock();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~MovingToStock();
 };
 
 class StockToIdle : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p, const GameState& gm) const { return (p.GetPosition() == gm.beginPos); }
-	virtual ~StockToIdle() {}
+	StockToIdle();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~StockToIdle();
 };
 
-class IdleToCrafthouse : public Transition
+class IdleToCraftIdle : public Transition
 {
 public:
-	virtual bool ReturnValue(const People& p, const GameState& gm) const { return (gm.Stock == gm.qtToBuild); }
-	virtual ~IdleToCrafthouse() {}
+	IdleToCraftIdle();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~IdleToCraftIdle();
+};
+
+class CraftIdleToMove : public Transition
+{
+public:
+	CraftIdleToMove();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~CraftIdleToMove();
+};
+
+class MoveToReffine : public Transition
+{
+public:
+	MoveToReffine();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~MoveToReffine();
+};
+
+class ReffineToMove : public Transition
+{
+public:
+	ReffineToMove();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~ReffineToMove();
+};
+
+class MoveToStock : public Transition
+{
+public:
+	MoveToStock();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~MoveToStock();
+};
+
+class StockToCraftIdle : public Transition
+{
+public:
+	StockToCraftIdle();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~StockToCraftIdle();
+};
+
+class CraftIdleToBuild : public Transition
+{
+public:
+	CraftIdleToBuild();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~CraftIdleToBuild();
+};
+
+class BuildToDone : public Transition
+{
+public:
+	BuildToDone();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~BuildToDone();
+};
+
+class DoneToIdle : public Transition
+{
+public:
+	DoneToIdle();
+	virtual bool ReturnValue(const People& p, const GameState& gm) const;
+	virtual ~DoneToIdle();
 };

@@ -1,0 +1,3 @@
+#pragma once
+enum possibleStates { ST_IDLE, ST_MOVING, ST_GATHER, ST_FILLING, ST_FLEE, ST_DEATH, ST_FINISH };
+enum craftHouseState { ST_CRAFTIDLE = 10, ST_REFFINE = 11, ST_MOVE = 12, ST_STOCKREF = 13, ST_BUILD = 14, ST_DONE = 15 };
