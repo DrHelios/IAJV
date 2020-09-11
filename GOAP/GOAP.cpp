@@ -2,6 +2,10 @@
 //
 
 #include <iostream>
+#include "preconditionsVirtual.h"
+#include "effectsVirtual.h"
+
+using namespace std;
 
 int main()
 {

@@ -149,6 +149,15 @@
   <ItemGroup>
     <ClCompile Include="GOAP.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChopWoodAction.h" />
+    <ClInclude Include="effects.h" />
+    <ClInclude Include="effectsVirtual.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GoapAction.h" />
+    <ClInclude Include="preconditions.h" />
+    <ClInclude Include="preconditionsVirtual.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
