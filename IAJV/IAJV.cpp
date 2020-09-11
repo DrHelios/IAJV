@@ -3,18 +3,46 @@
 
 #include "People.h"
 #include "WorkerTransitions.h"
+#include "WorkerStates.h"
 #include "Helper.h"
+#include <cassert>
 
 
 // créer classe stateMachine , transition, people
 // enum job ----> enum action pour chaque job --> différentes actions possibles
 void CreateStateMachineForPeople(People &p)
 {
-	States* idle = new States(ST_IDLE);
-	States* moving = new States(ST_MOVING);
-	Transition* transition = new IdleToMove(); //"gamestate", "condition"
-	idle->AddTransition(transition, moving);
-	if (p.GetStateMachine()->GetCurrentState()->GetTransitionList().size() == 0) p.CreateStateMachine(idle);
+	States* idle = new IdleState(ST_IDLE);
+	p.CreateStateMachine(idle);
+	States* moving = new MoveState(ST_MOVING);
+	States* gather = new GatherState(ST_GATHER);
+	States* stock = new StockState(ST_FILLING);
+	States* craft = new CraftState(ST_CRAFT);
+	States* death = new DeathState(ST_DEATH);
+	Transition* idle_to_move = new IdleToMove(); 
+	Transition* move_to_gather = new MoveToGather();
+	Transition* gather_to_move = new GatherToMove();
+	Transition* move_to_stock = new MoveToStock();
+	Transition* stock_to_idle = new StockToIdle();
+	Transition* idle_to_craft = new IdleToCrafthouse();
+	idle->AddTransition(idle_to_move, moving);
+	moving->AddTransition(move_to_gather, gather);
+	gather->AddTransition(gather_to_move, moving);
+	moving->AddTransition(move_to_stock, stock);
+	stock->AddTransition(stock_to_idle, idle);
+	idle->AddTransition(idle_to_craft, craft);
+	StateMachine* st = p.GetStateMachine();
+	assert((st != nullptr));
+	if (st != nullptr)
+	{
+		States* current = st->GetCurrentState();
+		assert(current != nullptr);
+		if (current != nullptr)
+		{
+			std::vector<std::pair<Transition*, States*>> transList = current->GetTransitionList();
+			if (transList.size() == 0) p.CreateStateMachine(idle);
+		}
+	}
 }
 void DestroyStateMachineForPeople(People &p) { p.DestroyStateMachine(); }
 
@@ -28,12 +56,6 @@ int main()
 {	
 	try 
 	{
-		//int nbOfWorkers;
-		//std::cout << "Enter the number of workers : " << std::endl;
-		//cin >> nbOfWorkers;
-		//for (int i = 0; i < nbOfWorkers)
-		//{
-		//}
 		nb_personne = 1;
 		x = 1;
 		y = 1;
@@ -41,10 +63,10 @@ int main()
 		game_state.Stock = 0;
 		game_state.raffinedStock = 0;
 
-		std::cout << "choix quantité max dans pocket" << std::endl;
+		std::cout << "choix quantite max dans pocket" << std::endl;
 		std::cin >> game_state.maxQtInPocket;
 
-		std::cout << "choix quantité max dans de maison à construire" << std::endl;
+		std::cout << "choix quantite max dans de maison a construire" << std::endl;
 		std::cin >> game_state.numberOfHouses;
 
 		std::cout << "choix de la position x de la foret" << std::endl;
@@ -75,9 +97,11 @@ int main()
 			People p = People(name);
 			peopleList.push_back(p);
 		}
+		CreateStateMachineForPeople(peopleList[0]);
+		peopleList[0].ProcessState(game_state);
 
 
-
+		DestroyStateMachineForPeople(peopleList[0]);
 
 	} 
 	catch (std::exception e)
