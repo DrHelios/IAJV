@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Test.cpp" />
     <ClCompile Include="IAJV.cpp" />
     <ClCompile Include="People.cpp" />
     <ClCompile Include="StateMachine.cpp" />
