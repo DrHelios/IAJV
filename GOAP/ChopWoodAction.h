@@ -4,6 +4,10 @@
 
 using namespace std;
 
+People* ppl = new People();
+int pockets = ppl->woodPocket; //le passer en parametre a preconditions et effects
+
+
 class ChopWood : public GoapAction
 {
 private:
@@ -13,17 +17,10 @@ private:
 
 public:
 	float cost = 1;
-	float targetX = 1, targetY = 1;
 	void reset() { chopped = true; }
-	bool isDone() { return chopped; }
-	bool checkPrecondition() { woodworkerNb > 0 ; }
-	bool perform() { totalWood += 200; return true; }
-	bool requiresInRange() { return false; }
-	bool isInRange() {
-		return inRange;
-	}
-
-
+	bool checkPrecondition() { woodworkerNb > 0 ; } //appeler la bonne fonction dans preconditionsVirtual
+	bool perform() { totalWood += pockets; return true; }
+	
 	ChopWood() {}
 
 };

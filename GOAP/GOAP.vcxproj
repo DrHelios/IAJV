@@ -155,6 +155,7 @@
     <ClInclude Include="effectsVirtual.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GoapAction.h" />
+    <ClInclude Include="People.h" />
     <ClInclude Include="preconditions.h" />
     <ClInclude Include="preconditionsVirtual.h" />
   </ItemGroup>

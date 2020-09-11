@@ -5,5 +5,5 @@
 class Preconditions
 {
 public:
-	virtual std::string name();
+	virtual bool name();
 };

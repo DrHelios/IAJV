@@ -5,5 +5,5 @@
 class Effects
 {
 public:
-	virtual std::string name();
+	virtual bool name();
 };

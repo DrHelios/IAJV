@@ -14,15 +14,10 @@ private:
 
 public:
 	float cost = 1;
-	float targetX = 1, targetY = 1;
 	void reset();
 	bool isDone();
 	bool checkPrecondition();
 	bool perform();
-	bool requiresInRange();
-	bool isInRange() {
-		return inRange;
-	}
 
 
 	GoapAction() {}
