@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdlib.h>
+#include <cmath>
 
 struct Position {
 	float x, y;
@@ -11,13 +13,13 @@ struct Position {
 struct GameState
 {
 	int Stock, raffinedStock, curNbOfHouse, numberOfHouses, maxQtInPocket = 200, qtToBuild = 1000;
-	Position beginPos, forestPos, stockPos, buildPos;
+	Position beginPos, forestPos, stockPos, buildPos, steping;
 };
 
 class Transition;
 
 enum possibleStates { ST_IDLE, ST_MOVING, ST_GATHER, ST_FILLING, ST_FLEE, ST_DEATH, ST_FINISH };
-enum craftHouseState { ST_CRAFTIDLE = 10, ST_REFFINE = 11, ST_STOCKREF = 12, ST_BUILD = 13, ST_DONE = 14 };
+enum craftHouseState { ST_CRAFTIDLE = 10, ST_REFFINE = 11, ST_MOVE = 12, ST_STOCKREF = 13, ST_BUILD = 14, ST_DONE = 15};
 
 class States
 {
@@ -55,7 +57,6 @@ public:
 	States* GetCurrentState(){ return current_states; };
 
 	void SetCurrentState(int newCurrentState) { current_states->actualState = newCurrentState; }
-
 };
 
 class People;
@@ -83,13 +84,33 @@ public:
 	StateMachine* GetStateMachine() { return state_machine; }
 	void CreateStateMachine(States* state) { state_machine = new StateMachine(state); }
 	void DestroyStateMachine() { delete state_machine; }
+	int SetChanceToFlee() 
+	{ 
+		int test = rand() % 100; 
+		return (test); 
+	}
+	Position CalculateStep(Position beginPos, Position destinationPos) const
+	{
+		float stepX = abs(beginPos.x - destinationPos.x);
+		float stepY = abs(beginPos.y - destinationPos.y);
+		float maxValue = std::max(stepX, stepY);
+		if (stepX != 0 && stepY != 0)
+		{
+			stepX = stepX / maxValue;
+			stepY = stepY / maxValue;
+			stepX = std::copysignf(stepX, destinationPos.x - beginPos.x);
+			stepY = std::copysignf(stepY, destinationPos.y - beginPos.y);
+		}
+		return { stepX, stepY };
+	}
 
 	void ProcessState(GameState& gs)
 	{
 		States* currentState = this->state_machine->GetCurrentState();
+		Transition* tmp = NULL;
 		for (std::pair<Transition*, int>& list : currentState->GetTransitionList())
 		{
-			Transition* tmp = list.first;
+			tmp = list.first;
 			if (tmp->ReturnValue(*this, gs) && currentState->actualState != list.second && list.first->previousState == currentState->actualState)
 			{
 				this->state_machine->SetCurrentState(list.second);
@@ -105,8 +126,22 @@ public:
 				std::cout << "Chillin with the boys" << std::endl;
 					break;
 			case possibleStates::ST_MOVING:
+			{
 				std::cout << "On my way Chief !" << std::endl;
+				switch (tmp->previousState)
+				{
+					case possibleStates::ST_IDLE:
+						gs.steping = this->CalculateStep(this->pos, gs.forestPos);
+						break;
+					case possibleStates::ST_GATHER:
+						gs.steping = this->CalculateStep(gs.forestPos, gs.stockPos);
+						break;
+				}
+				this->pos.x += gs.steping.x;
+				this->pos.y += gs.steping.y;
+				std::cout << "My new pos is : X : " << this->pos.x << " Y : " << this->pos.y << std::endl;
 				break;
+			}
 			case possibleStates::ST_GATHER:
 				std::cout << "Gathering all the loot I can" << std::endl;
 				this->quantityInPocket = gs.maxQtInPocket;
@@ -119,7 +154,7 @@ public:
 				std::cout << "We have " << gs.Stock << " Woods in the stock." << std::endl;
 				break;
 			case possibleStates::ST_FLEE:
-				std::cout << "NINGERU DA YOOOOOOOOOOOOOOO" << std::endl;
+				std::cout << "A WOLF ! NINGERU DA YOOOOOOOOOOOOOOO" << std::endl;
 				break;
 			case possibleStates::ST_DEATH:
 				std::cout << "I don't feel so good, mister chief ....." << std::endl;
@@ -131,7 +166,25 @@ public:
 				std::cout << "Let's use this wood to make plate !" << std::endl;
 				gs.Stock -= gs.maxQtInPocket;
 				this->quantityInPocket = gs.maxQtInPocket;
+				std::cout << "Pockets are full ! Let's move" << std::endl;
 				break;
+			case craftHouseState::ST_MOVE:
+			{
+				std::cout << "On my way Chief !" << std::endl;
+				switch (tmp->previousState)
+				{
+					case craftHouseState::ST_CRAFTIDLE:
+						gs.steping = this->CalculateStep(this->pos, gs.stockPos);
+						break;
+					case craftHouseState::ST_REFFINE:
+						gs.steping = this->CalculateStep(this->pos, gs.buildPos);
+						break;
+				}
+				this->pos.x += gs.steping.x;
+				this->pos.y += gs.steping.y;
+				std::cout << "My new pos is : X : " << this->pos.x << " Y : " << this->pos.y << std::endl;
+				break;
+			}
 			case craftHouseState::ST_STOCKREF:
 				std::cout << "*Noises of wood being cut* " << std::endl;
 				gs.raffinedStock += this->quantityInPocket;
@@ -160,43 +213,67 @@ public:
 	virtual ~IdleToFinish() {}
 };
 
-class IdleToMove : public Transition
+class IdleToMoving : public Transition
 {
 public:
-	IdleToMove() : Transition(possibleStates::ST_IDLE) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (gm.Stock != gm.qtToBuild); }
-	virtual ~IdleToMove() {}
+	IdleToMoving() : Transition(possibleStates::ST_IDLE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (gm.Stock < gm.qtToBuild); }
+	virtual ~IdleToMoving() {}
 };
 
-class MoveToGather : public Transition
+class MovingToGather : public Transition
 {
 public:
-	MoveToGather() : Transition(possibleStates::ST_MOVING) {}
+	MovingToGather() : Transition(possibleStates::ST_MOVING) {}
 	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.forestPos && p.GetQuantityInPocket() == 0); }
-	virtual ~MoveToGather() {}
+	virtual ~MovingToGather() {}
 };
 
-class GatherToMove : public Transition
+class GatherToMoving : public Transition
 {
 public:
-	GatherToMove() : Transition(possibleStates::ST_GATHER) {}
+	GatherToMoving() : Transition(possibleStates::ST_GATHER) {}
 	virtual bool ReturnValue(People p, GameState gm) { return (p.GetQuantityInPocket() == gm.maxQtInPocket); }
-	virtual ~GatherToMove() {}
+	virtual ~GatherToMoving() {}
 };
 
-class MoveToStock : public Transition
+class MovingToFlee : public Transition
 {
 public:
-	MoveToStock() : Transition(possibleStates::ST_MOVING) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.stockPos); }
-	virtual ~MoveToStock() {}
+	MovingToFlee() : Transition(possibleStates::ST_MOVING) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.SetChanceToFlee()>= 50); }
+	virtual ~MovingToFlee() {}
+};
+
+class FleeToDeath : public Transition
+{
+public:
+	FleeToDeath() : Transition(possibleStates::ST_FLEE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.SetChanceToFlee() >= 50); }
+	virtual ~FleeToDeath() {}
+};
+
+class FleeToMoving : public Transition
+{
+public:
+	FleeToMoving() : Transition(possibleStates::ST_FLEE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.SetChanceToFlee() >= 50); }
+	virtual ~FleeToMoving() {}
+};
+
+class MovingToStock : public Transition
+{
+public:
+	MovingToStock() : Transition(possibleStates::ST_MOVING) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.stockPos && p.GetQuantityInPocket() != 0); }
+	virtual ~MovingToStock() {}
 };
 
 class StockToIdle : public Transition
 {
 public:
 	StockToIdle() : Transition(possibleStates::ST_FILLING) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.beginPos); }
+	virtual bool ReturnValue(People p, GameState gm) { return (true); }
 	virtual ~StockToIdle() {}
 };
 
@@ -204,24 +281,40 @@ class IdleToCraftIdle : public Transition
 {
 public:
 	IdleToCraftIdle() : Transition(possibleStates::ST_IDLE) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (gm.Stock == gm.qtToBuild); }
+	virtual bool ReturnValue(People p, GameState gm) { return (gm.Stock >= gm.qtToBuild); }
 	virtual ~IdleToCraftIdle() {}
 };
 
-class CraftIdleToReffine : public Transition
+class CraftIdleToMove : public Transition
 {
 public:
-	CraftIdleToReffine() : Transition(craftHouseState::ST_CRAFTIDLE) {}
+	CraftIdleToMove() : Transition(craftHouseState::ST_CRAFTIDLE) {}
 	virtual bool ReturnValue(People p, GameState gm) { return (gm.raffinedStock < gm.qtToBuild); }
-	virtual ~CraftIdleToReffine() {}
+	virtual ~CraftIdleToMove() {}
 };
 
-class ReffineToStock : public Transition
+class MoveToReffine : public Transition
 {
 public:
-	ReffineToStock() : Transition(craftHouseState::ST_REFFINE) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (true); }
-	virtual ~ReffineToStock() {}
+	MoveToReffine() : Transition(craftHouseState::ST_MOVE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.stockPos && p.GetQuantityInPocket() == 0); }
+	virtual ~MoveToReffine() {}
+};
+
+class ReffineToMove : public Transition
+{
+public:
+	ReffineToMove() : Transition(craftHouseState::ST_REFFINE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.GetQuantityInPocket() != 0); }
+	virtual ~ReffineToMove() {}
+};
+
+class MoveToStock : public Transition
+{
+public:
+	MoveToStock() : Transition(craftHouseState::ST_MOVE) {}
+	virtual bool ReturnValue(People p, GameState gm) { return (p.GetPosition() == gm.buildPos); }
+	virtual ~MoveToStock() {}
 };
 
 class StockToCraftIdle: public Transition
@@ -236,7 +329,7 @@ class CraftIdleToBuild : public Transition
 {
 public:
 	CraftIdleToBuild() : Transition(craftHouseState::ST_CRAFTIDLE) {}
-	virtual bool ReturnValue(People p, GameState gm) { return (gm.raffinedStock == gm.qtToBuild); }
+	virtual bool ReturnValue(People p, GameState gm) { return (gm.raffinedStock >= gm.qtToBuild); }
 	virtual ~CraftIdleToBuild() {}
 };
 
@@ -264,58 +357,70 @@ float x, y;
 
 int main()
 {
-		x = 1;
-		y = 1;
-		gs.beginPos = { 0, 0 };
-		gs.Stock = 0;
-		gs.raffinedStock = 0;
+	x = 1;
+	y = 1;
+	gs.beginPos = { 0, 0 };
+	gs.Stock = 0;
+	gs.raffinedStock = 0;
 
 	int test;
 	possibleStates pSt = possibleStates::ST_IDLE;
 	States* s = new States(pSt);
 	s->AddTransition(new IdleToFinish(), possibleStates::ST_FINISH);
-	s->AddTransition(new IdleToMove(), possibleStates::ST_MOVING);
-	s->AddTransition(new MoveToGather(), possibleStates::ST_GATHER);
-	s->AddTransition(new GatherToMove(), possibleStates::ST_MOVING);
-	s->AddTransition(new MoveToStock(), possibleStates::ST_FILLING);
+	s->AddTransition(new IdleToMoving(), possibleStates::ST_MOVING);
+	s->AddTransition(new MovingToGather(), possibleStates::ST_GATHER);
+	s->AddTransition(new GatherToMoving(), possibleStates::ST_MOVING);
+	s->AddTransition(new MovingToFlee(), possibleStates::ST_FLEE);
+	s->AddTransition(new FleeToDeath(), possibleStates::ST_DEATH);
+	s->AddTransition(new FleeToMoving(), possibleStates::ST_MOVING);
+	s->AddTransition(new MovingToStock(), possibleStates::ST_FILLING);
 	s->AddTransition(new StockToIdle(), possibleStates::ST_IDLE);
 	s->AddTransition(new IdleToCraftIdle(), craftHouseState::ST_CRAFTIDLE);
-	s->AddTransition(new CraftIdleToReffine(), craftHouseState::ST_REFFINE);
-	s->AddTransition(new ReffineToStock(), craftHouseState::ST_STOCKREF);
+	s->AddTransition(new CraftIdleToMove(), craftHouseState::ST_MOVE);
+	s->AddTransition(new MoveToReffine(), craftHouseState::ST_REFFINE);
+	s->AddTransition(new ReffineToMove(), craftHouseState::ST_MOVE);
+	s->AddTransition(new MoveToStock(), craftHouseState::ST_STOCKREF);
 	s->AddTransition(new StockToCraftIdle(), craftHouseState::ST_CRAFTIDLE);
 	s->AddTransition(new CraftIdleToBuild(), craftHouseState::ST_BUILD);
 	s->AddTransition(new BuildToDone(), craftHouseState::ST_DONE);
 	s->AddTransition(new DoneToIdle(), possibleStates::ST_IDLE);
 
 #pragma region Paramétrage
-	std::cout << "choix quantite max dans pocket" << std::endl;
+	std::cout << "How much weight can I carry ?" << std::endl;
 	std::cin >> gs.maxQtInPocket;
 
-	std::cout << "choix quantite max dans de maison a construire" << std::endl;
+	std::cout << "How many houses do you want in our village ?" << std::endl;
 	std::cin >> gs.numberOfHouses;
 
-	std::cout << "choix de la position x de la foret" << std::endl;
+	std::cout << "Where is the forest ?" << std::endl;
+	std::cout << "X ?" << std::endl;
 	std::cin >> x;
-	std::cout << "choix de la position y de la foret" << std::endl;
+	std::cout << "Y ?" << std::endl;
 	std::cin >> y;
 	gs.forestPos = { x, y };
 
-	std::cout << "choix de la position x de la zone de construction" << std::endl;
+	std::cout << "Where do I build the village ?" << std::endl;
+	std::cout << "X ?" << std::endl;
 	std::cin >> x;
-	std::cout << "choix de la position y de la zone de construction" << std::endl;
+	std::cout << "Y ?" << std::endl;
 	std::cin >> y;
 	gs.buildPos = { x, y };
 
-	std::cout << "choix de la position x du stockage" << std::endl;
+	std::cout << "Where do I stock what I gather ?" << std::endl;
+	std::cout << "X ?" << std::endl;
 	std::cin >> x;
-	std::cout << "choix de la position y du stockage" << std::endl;
+	std::cout << "Y ?" << std::endl;
 	std::cin >> y;
 	gs.stockPos = { x, y };
+
+	std::cout << "Ok, let's go chief !" << std::endl;
+
 #pragma endregion
 
 	People p = People();
 	p.CreateStateMachine(s);
-	while (p.GetStateMachine()->GetCurrentState()->actualState != possibleStates::ST_FINISH)
+	while (p.GetStateMachine()->GetCurrentState()->actualState != possibleStates::ST_FINISH &&
+		p.GetStateMachine()->GetCurrentState()->actualState != possibleStates::ST_DEATH)
 	{
 		p.ProcessState(gs);
 		while (std::cin.get() != '\n') {}
