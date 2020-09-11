@@ -3,6 +3,8 @@
 #include "Position.h"
 #include "Helper.h"
 
+struct GameState;
+
 class People
 {
 private:
@@ -20,5 +22,6 @@ public:
 	StateMachine* GetStateMachine() const { return state_machine; }
 	void CreateStateMachine(States* state) { state_machine = new StateMachine(state); }
 	void DestroyStateMachine() { delete state_machine; }
+	void ProcessState(const GameState& gs);
 };
 

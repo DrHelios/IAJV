@@ -17,18 +17,5 @@ public:
 
 	void SetCurrentState(States* newCurrentState) { current_states = newCurrentState; }
 
-	/*void ProcessState(const People &p, const GameState &gs)
-	{
-		
-		for (const std::pair<const Transition*, States*> &list : current_states->GetTransitionList())
-		{
-			const  Transition* tmp = list.first;
-			if (tmp->ReturnValue(p, gs))
-			{
-				SetCurrentState(list.second); 
-				current_states = list.second;
-			}
-		}
-	}*/
 };
 
