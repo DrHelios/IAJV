@@ -27,13 +27,13 @@ GatherToMoving::~GatherToMoving() {}
 
 
 MovingToFlee::MovingToFlee() : Transition(possibleStates::ST_MOVING) {}
-bool MovingToFlee::ReturnValue(const People& p, const GameState& gm) const { return (p.SetChanceToFlee() >= 50); }
+bool MovingToFlee::ReturnValue(const People& p, const GameState& gm) const { return (p.SetChanceToFlee() >= 95); }
 MovingToFlee::~MovingToFlee() {}
 
 
 
 FleeToDeath::FleeToDeath() : Transition(possibleStates::ST_FLEE) {}
-bool FleeToDeath::ReturnValue(const People& p, const GameState& gm) const { return (p.SetChanceToFlee() >= 50); }
+bool FleeToDeath::ReturnValue(const People& p, const GameState& gm) const { return (p.SetChanceToFlee() >= 95); }
 FleeToDeath::~FleeToDeath() {}
 
 
@@ -48,7 +48,7 @@ FleeToStock::~FleeToStock() {}
 
 
 FleeToMoving::FleeToMoving() : Transition(possibleStates::ST_FLEE) {}
-bool FleeToMoving::ReturnValue(const People& p, const GameState& gm) const { return (p.SetChanceToFlee() >= 50); }
+bool FleeToMoving::ReturnValue(const People& p, const GameState& gm) const { return (true); }
 FleeToMoving::~FleeToMoving() {}
 
 

@@ -37,13 +37,13 @@ void People::ProcessState(GameState& gs)
 	for (std::pair<Transition*, int>& list : currentState->GetTransitionList())
 	{
 		tmp = list.first;
-		if (tmp->ReturnValue(*this, gs) && currentState->actualState != list.second && list.first->previousState == currentState->actualState)
+		if (tmp->ReturnValue(*this, gs) && currentState->GetPossibleState() != list.second && list.first->getPreviousState() == currentState->GetPossibleState())
 		{
 			this->state_machine->SetCurrentState(list.second);
 			break;
 		}
 	}
-	switch (currentState->actualState)
+	switch (currentState->GetPossibleState())
 	{
 	case possibleStates::ST_FINISH:
 		std::cout << "We did it chief ! Our new life is beggining !" << std::endl;
@@ -54,7 +54,7 @@ void People::ProcessState(GameState& gs)
 	case possibleStates::ST_MOVING:
 	{
 		std::cout << "On my way Chief !" << std::endl;
-		switch (tmp->previousState)
+		switch (tmp->getPreviousState())
 		{
 		case possibleStates::ST_IDLE:
 			gs.steping = this->CalculateStep(this->pos, gs.forestPos);
@@ -97,7 +97,7 @@ void People::ProcessState(GameState& gs)
 	case craftHouseState::ST_MOVE:
 	{
 		std::cout << "On my way Chief !" << std::endl;
-		switch (tmp->previousState)
+		switch (tmp->getPreviousState())
 		{
 		case craftHouseState::ST_CRAFTIDLE:
 			gs.steping = this->CalculateStep(this->pos, gs.stockPos);

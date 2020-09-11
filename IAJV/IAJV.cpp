@@ -48,15 +48,9 @@
 #include "Helper.h"
 #include "People.h"
 #include"WorkerTransitions.h"
-void CreateStateMachineForPeople(People p)
+void CreateStateMachineForPeople(People &p)
 {
 	States* s = new States(possibleStates::ST_IDLE);
-	assert(s != nullptr);
-	if (s != nullptr)
-	{
-		std::vector<std::pair<Transition*, int>> transList = s->GetTransitionList();
-		if (transList.size() == 0) p.CreateStateMachine(s);
-	}
 	s->AddTransition(new IdleToFinish(), possibleStates::ST_FINISH);
 	s->AddTransition(new IdleToMoving(), possibleStates::ST_MOVING);
 	s->AddTransition(new MovingToGather(), possibleStates::ST_GATHER);
@@ -93,27 +87,6 @@ int main()
 	gs.Stock = 0;
 	gs.raffinedStock = 0;
 
-	/*possibleStates pSt = possibleStates::ST_IDLE;
-	States* s = new States(pSt);
-	s->AddTransition(new IdleToFinish(), possibleStates::ST_FINISH);
-	s->AddTransition(new IdleToMoving(), possibleStates::ST_MOVING);
-	s->AddTransition(new MovingToGather(), possibleStates::ST_GATHER);
-	s->AddTransition(new GatherToMoving(), possibleStates::ST_MOVING);
-	s->AddTransition(new MovingToFlee(), possibleStates::ST_FLEE);
-	s->AddTransition(new FleeToDeath(), possibleStates::ST_DEATH);
-	s->AddTransition(new FleeToMoving(), possibleStates::ST_MOVING);
-	s->AddTransition(new MovingToStock(), possibleStates::ST_FILLING);
-	s->AddTransition(new StockToIdle(), possibleStates::ST_IDLE);
-	s->AddTransition(new IdleToCraftIdle(), craftHouseState::ST_CRAFTIDLE);
-	s->AddTransition(new CraftIdleToMove(), craftHouseState::ST_MOVE);
-	s->AddTransition(new MoveToReffine(), craftHouseState::ST_REFFINE);
-	s->AddTransition(new ReffineToMove(), craftHouseState::ST_MOVE);
-	s->AddTransition(new MoveToStock(), craftHouseState::ST_STOCKREF);
-	s->AddTransition(new StockToCraftIdle(), craftHouseState::ST_CRAFTIDLE);
-	s->AddTransition(new CraftIdleToBuild(), craftHouseState::ST_BUILD);
-	s->AddTransition(new BuildToDone(), craftHouseState::ST_DONE);
-	s->AddTransition(new DoneToIdle(), possibleStates::ST_IDLE);*/
-
 #pragma region Paramétrage
 	std::cout << "How much weight can I carry ?" << std::endl;
 	std::cin >> gs.maxQtInPocket;
@@ -148,14 +121,12 @@ int main()
 
 	People p = People();
 	CreateStateMachineForPeople(p);
-	//p.CreateStateMachine(s);
-	while (p.GetStateMachine()->GetCurrentState()->actualState != possibleStates::ST_FINISH &&
-		p.GetStateMachine()->GetCurrentState()->actualState != possibleStates::ST_DEATH)
+	while (p.GetStateMachine()->GetCurrentState()->GetPossibleState() != possibleStates::ST_FINISH &&
+		p.GetStateMachine()->GetCurrentState()->GetPossibleState() != possibleStates::ST_DEATH)
 	{
 		p.ProcessState(gs);
 		while (std::cin.get() != '\n') {}
 	}
-	//p.DestroyStateMachine();
 	DestroyStateMachineForPeople(p);
 	return 0;
 }

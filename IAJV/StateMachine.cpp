@@ -4,4 +4,4 @@ StateMachine::StateMachine(States* start) : begin(start), current_states(start) 
 StateMachine::~StateMachine() { delete begin; }
 States* StateMachine::GetBeginState() const{ return begin; };
 States* StateMachine::GetCurrentState() const{ return current_states; };
-void StateMachine::SetCurrentState(int newCurrentState) { current_states->actualState = newCurrentState; }
+void StateMachine::SetCurrentState(int newCurrentState) { current_states->SetPossibleState(newCurrentState); }
