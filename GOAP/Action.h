@@ -5,6 +5,7 @@
 #include "Effect.h"
 class Action
 {
+private:
 	std::string m_name;
 	std::vector<Precondition*> preconditions;
 	std::vector<Effect*> effects;
@@ -14,6 +15,9 @@ public:
 	Action(std::string name, int cost) : m_name(name), m_cost(cost), preconditions(), effects() {}
 	void AddPrecondition(Precondition* precond) { preconditions.push_back(precond); }
 	void AddEffect(Effect* eff) { effects.push_back(eff); }
+	std::vector<Precondition*> GetPrecontionList() const { return preconditions; }
+	std::vector<Effect*> GetEffectList() const { return effects; }
+
 
 };
 

@@ -1,49 +1,4 @@
 //// IAJV.cpp : This file contains the 'main' function. Program execution begins and ends there.
-////
-//
-//#include "People.h"
-//#include "WorkerTransitions.h"
-//#include "WorkerStates.h"
-//#include "Helper.h"
-//#include <cassert>
-//
-//
-//// créer classe stateMachine , transition, people
-//// enum job ----> enum action pour chaque job --> différentes actions possibles
-//void CreateStateMachineForPeople(People &p)
-//{
-//	States* idle = new IdleState(ST_IDLE);
-//	p.CreateStateMachine(idle);
-//	States* moving = new MoveState(ST_MOVING);
-//	States* gather = new GatherState(ST_GATHER);
-//	States* stock = new StockState(ST_FILLING);
-//	States* craft = new CraftState(ST_CRAFT);
-//	States* death = new DeathState(ST_DEATH);
-//	Transition* idle_to_move = new IdleToMove(); 
-//	Transition* move_to_gather = new MoveToGather();
-//	Transition* gather_to_move = new GatherToMove();
-//	Transition* move_to_stock = new MoveToStock();
-//	Transition* stock_to_idle = new StockToIdle();
-//	Transition* idle_to_craft = new IdleToCrafthouse();
-//	idle->AddTransition(idle_to_move, moving);
-//	moving->AddTransition(move_to_gather, gather);
-//	gather->AddTransition(gather_to_move, moving);
-//	moving->AddTransition(move_to_stock, stock);
-//	stock->AddTransition(stock_to_idle, idle);
-//	idle->AddTransition(idle_to_craft, craft);
-//	StateMachine* st = p.GetStateMachine();
-//	assert((st != nullptr));
-//	if (st != nullptr)
-//	{
-//		States* current = st->GetCurrentState();
-//		assert(current != nullptr);
-//		if (current != nullptr)
-//		{
-//			std::vector<std::pair<Transition*, States*>> transList = current->GetTransitionList();
-//			if (transList.size() == 0) p.CreateStateMachine(idle);
-//		}
-//	}
-//}
 
 #include "Helper.h"
 #include "People.h"

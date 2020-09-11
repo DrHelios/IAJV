@@ -8,5 +8,10 @@
 int main()
 {
     std::cout << "Hello World!\n";
+    Precondition* verifyQtOfWood = new WoodToBuild(P_ENOUGHWOOD);
+    Effect* Buildhouse = new BuildHouse(P_ENOUGHWOOD);
+    Effect* GatherWood = new ChopWoods(P_ENOUGHTREES);
+    Precondition* GetNbOFtrees = new GetTreesInForest(P_ENOUGHTREES);
+    Precondition* GetNbOfVillagois = new GetVillager(P_ENOUGHTREES)
 }
 

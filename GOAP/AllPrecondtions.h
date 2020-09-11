@@ -5,25 +5,38 @@ class PocketFull : Precondition
 {
 
 public:
-	PocketFull() : Precondition() {}
-	PocketFull(Condition cond) : Precondition(cond) {}
-	virtual bool Check(const People& p, const GameState& gs) const { return (p.Pocket() == gs.maxQtInPocket); }
+	PocketFull();
+	PocketFull(Condition cond);
+	virtual bool Check(const People& p, const GameState& gs) const;
+	~PocketFull();
 };
 
 class WoodToBuild : Precondition
 {
 public:
-	WoodToBuild() : Precondition() {}
-	WoodToBuild(Condition cond) : Precondition(cond) {}
-	virtual bool Check(const People& p, const GameState& gs) const { return (gs.Stock == gs.qtToBuild); }
+	WoodToBuild();
+	WoodToBuild(Condition cond);
+	virtual bool Check(const People& p, const GameState& gs) const;
+	~WoodToBuild();
 };
+
+class reffinedWoodToBuild : Precondition
+{
+public:
+	reffinedWoodToBuild();
+	reffinedWoodToBuild(Condition cond);
+	virtual bool Check(const People& p, const GameState& gs) const;
+	~reffinedWoodToBuild();
+};
+
 
 class WorkerToBuild : Precondition
 {
 public:
-	WorkerToBuild() : Precondition() {}
-	WorkerToBuild(Condition cond) : Precondition(cond) {}
-	virtual bool Check(const People& p, const GameState& gs) const { return (gs.villagers.size() >= gs.nbWorkerMax); }
+	WorkerToBuild();
+	WorkerToBuild(Condition cond);
+	virtual bool Check(const People& p, const GameState& gs) const;
+	~WorkerToBuild();
 };
 
 

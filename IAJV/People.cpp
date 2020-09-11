@@ -119,7 +119,7 @@ void People::ProcessState(GameState& gs)
 		break;
 	case craftHouseState::ST_BUILD:
 		std::cout << "Building that sweeeeeeeeet home" << std::endl;
-		gs.raffinedStock = 0;
+		gs.raffinedStock -= gs.qtToBuild;
 		gs.curNbOfHouse += 1;
 		break;
 	case craftHouseState::ST_DONE:
