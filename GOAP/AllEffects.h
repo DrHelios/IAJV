@@ -4,6 +4,8 @@
 class ChopWood : Effect
 {
 public:
+	ChopWood() : Effect() {}
+	ChopWood(Condition cond) : Effect(cond) {}
 	virtual void Process(const People& p, const GameState& gs) {  }
 
 }; 
@@ -11,6 +13,8 @@ public:
 class BuildHousse: Effect
 {
 public:
+	BuildHousse() : Effect() {}
+	BuildHousse(Condition cond) : Effect(cond) {}
 	virtual void Process(const People & p, const GameState & gs) {  }
 
 };
@@ -18,6 +22,8 @@ public:
 class Stock : Effect
 {
 public:
+	Stock() : Effect() {}
+	Stock(Condition cond) : Effect(cond) {}
 	virtual void Process(const People& p, const GameState& gs) {  }
 
 };
