@@ -2,25 +2,25 @@
 
 ## State Machine
 
-Machine à état de bucheron, pour récolter et raffiner du bois, ainsi que construire des maisons.
-Positions X Y de la forêt, le stock et la menuiserie.
-Implémentation d'attaques de loups par pourcentage de chance.
-Etats d'**Idle**, **Déplacement** (pour stocker et raffiner), **Stockage**, **Fuite**, **Mort**.
-**_Substate Machine_** pour construire des maisons.
-Inputs en paramètre qui ont été testés : **200, 2, 2, 2, 4, 4, 6, 6**
+Machine à état de bucheron, pour récolter et raffiner du bois, ainsi que construire des maisons.  
+Positions X Y de la forêt, le stock et la menuiserie.  
+Implémentation d'attaques de loups par pourcentage de chance.  
+Etats d'**Idle**, **Déplacement** (pour stocker et raffiner), **Stockage**, **Fuite**, **Mort**.  
+**_Substate Machine_** pour construire des maisons.  
+Inputs en paramètre qui ont été testés : **200, 2, 2, 2, 4, 4, 6, 6**  
 
 ### Debug 
 
 #### Déplacement
 
-A cause des positions en float, l'IA peut parfois dépasser la position de destination.
-Ce bug est aléatoire et ne survient pas tout le temps.
+A cause des positions en float, l'IA peut parfois dépasser la position de destination.  
+Ce bug est aléatoire et ne survient pas tout le temps.  
 
 #### Fonctions Génériques
 
-Pour le traitement des cas dans la State Machine (Idle, Move, Etc.), nous avons utilisé un **Switch**
-plutôt que par une **Méthode Générique** car cela nous posait problème avec le reste de l'implémentation.
-Nous avons donc gardé ce switch par soucis de temps.
+Pour le traitement des cas dans la State Machine (Idle, Move, Etc.), nous avons utilisé un **Switch**  
+plutôt que par une **Méthode Générique** car cela nous posait problème avec le reste de l'implémentation.  
+Nous avons donc gardé ce switch par soucis de temps.  
 
 ## GOAP
 
