@@ -151,6 +151,7 @@
     <ClCompile Include="AllEffects.cpp" />
     <ClCompile Include="GOAP.cpp" />
     <ClCompile Include="AllPrecondtions.cpp" />
+    <ClCompile Include="People.cpp" />
     <ClCompile Include="Solver.cpp" />
   </ItemGroup>
   <ItemGroup>

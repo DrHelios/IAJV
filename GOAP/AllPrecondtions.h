@@ -1,7 +1,7 @@
 #pragma once
 #include "Precondition.h"
 
-class PocketFull : Precondition 
+class PocketFull : public Precondition 
 {
 
 public:
@@ -11,7 +11,7 @@ public:
 	~PocketFull();
 };
 
-class WoodToBuild : Precondition
+class WoodToBuild : public Precondition
 {
 public:
 	WoodToBuild();
@@ -20,17 +20,16 @@ public:
 	~WoodToBuild();
 };
 
-class reffinedWoodToBuild : Precondition
+class ReffinedWoodToBuild : public Precondition
 {
 public:
-	reffinedWoodToBuild();
-	reffinedWoodToBuild(Condition cond);
+	ReffinedWoodToBuild();
+	ReffinedWoodToBuild(Condition cond);
 	virtual bool Check(const People& p, const GameState& gs) const;
-	~reffinedWoodToBuild();
+	~ReffinedWoodToBuild();
 };
 
-
-class WorkerToBuild : Precondition
+class WorkerToBuild : public Precondition
 {
 public:
 	WorkerToBuild();
@@ -39,4 +38,11 @@ public:
 	~WorkerToBuild();
 };
 
-
+class GetTreesInForest : public Precondition
+{
+public:
+	GetTreesInForest();
+	GetTreesInForest(Condition cond);
+	virtual bool Check(const People& p, const GameState& gs) const;
+	~GetTreesInForest();
+};

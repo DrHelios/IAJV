@@ -8,6 +8,6 @@ public:
 	People();
 	People(std::string name, int bag);
 	std::string Name() const;
-	int Pocket() const;
-	void setPocket(int obj);
+	int GetPocket() const;
+	void SetPocket(int obj);
 };

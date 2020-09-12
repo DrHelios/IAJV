@@ -1,66 +1,59 @@
 #pragma once
 #include "Effect.h"
 
-
-class ChopWood : Effect
+class ChopWood : public Effect
 {
 public:
 	ChopWood();
 	ChopWood(Condition cond);
-	virtual void Process(const People& p, const GameState& gs);
+	virtual void Process(People& p, GameState& gs)const;
 	~ChopWood();
 
 }; 
 
-class ReffineWood : Effect
+class ReffineWood : public Effect
 {
 public:
 	ReffineWood();
 	ReffineWood(Condition cond);
-	virtual void Process(const People& p, const GameState& gs);
+	virtual void Process(People& p, GameState& gs) const;
 	~ReffineWood();
 
 };
 
-class BuildHouse: Effect
+class BuildHouse: public Effect
 {
 public:
-	BuildHouse() : Effect() {}
-	BuildHouse(Condition cond) : Effect(cond) {}
-	virtual void Process(const People & p, const GameState & gs) {  }	
+	BuildHouse();
+	BuildHouse(Condition cond);
+	virtual void Process(People& p, GameState& gs) const;
 	~BuildHouse();
 
 };
 
-class Stock : Effect
+class Stock : public Effect
 {
 public:
-	Stock() : Effect() {}
-	Stock(Condition cond) : Effect(cond) {}
-	virtual void Process(const People& p, const GameState& gs) {  }
+	Stock();
+	Stock(Condition cond);
+	virtual void Process(People& p, GameState& gs) const;
 	~Stock();
 };
 
-class GetVillager : Effect
+class LiberateVillager : public Effect
 {
 public:
-	GetVillager() : Effect() {}
-	GetVillager(Condition cond) : Effect(cond) {}
-	virtual void Process(const People& p, const GameState& gs) {  }
-	~GetVillager();
+	LiberateVillager();
+	LiberateVillager(Condition cond);
+	virtual void Process(People& p, GameState& gs) const;
+	~LiberateVillager();
 };
 
-class GetTreesInForest : Effect
+class AssignVillager : public Effect
 {
 public:
-	GetTreesInForest() : Effect() {}
-	GetTreesInForest(Condition cond) : Effect(cond) {}
-	virtual void Process(const People& p, const GameState& gs) {  }
-	~GetTreesInForest();
+	AssignVillager();
+	AssignVillager(Condition cond);
+	virtual void Process(People& p, GameState& gs) const;
+	~AssignVillager();
 };
-
-
-/*
-int Stock, raffinedStock, curNbOfHouse, numberOfHouses, maxQtInPocket, nbWorkerMax,
-		nbTree = 10000, qtToBuild = 1000;
-*/
