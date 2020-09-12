@@ -40,6 +40,6 @@ Nous avons donc gardé ce switch par soucis de temps.
 **Effet :** Assigner bucheron - **Précondition 3**  
 
 ### Nous vous demandons de bien vouloir nous faire un retour sur les deux projets.
-**alexandre.laberche@gmail.com**
-**Quentin.bonacina@gmail.com**
-**romain.rebecchi@gmail.com**
+**alexandre.laberche@gmail.com** 
+**Quentin.bonacina@gmail.com** 
+**romain.rebecchi@gmail.com** 
