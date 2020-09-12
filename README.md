@@ -38,3 +38,5 @@ Nous avons donc gardé ce switch par soucis de temps.
 **Effet :** Stocker du bois - **Préconditions 2,3**  
 **Effet :** Désassigner bucheron - **Précondition 3**  
 **Effet :** Assigner bucheron - **Précondition 3**  
+
+### nous vous demandons de bien vouloir nous faire un retour sur les deux projets.
