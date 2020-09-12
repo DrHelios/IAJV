@@ -24,17 +24,17 @@ Nous avons donc gardé ce switch par soucis de temps.
 
 ## GOAP
 
-**Objectif :**Construire une maison
+**Objectif :** Construire une maison
 
-**Précondition 1 : **Avoir du bois raffiné
-**Précondition 2 : **Avoir du bois brut
-**Précondition 3 : **Avoir un bucheron disponible
-**Précondition 4 : **Avoir de l'espace dans les poches
-**Précondition 5 : **Avoir assez d'arbres dans la forêt
+**Précondition 1 :** Avoir du bois raffiné  
+**Précondition 2 :** Avoir du bois brut  
+**Précondition 3 :** Avoir un bucheron disponible  
+**Précondition 4 :** Avoir de l'espace dans les poches  
+**Précondition 5 :** Avoir assez d'arbres dans la forêt  
 
-**Effet : **Couper du bois - **Préconditions 3,4,5**
-**Effet : **Obtenir du bois raffiné - **Préconditions 2,3**
-**Effet : **Construire une maison - **Préconditions 1,3**
-**Effet : **Stocker du bois - **Préconditions 2,3**
-**Effet : **Désassigner bucheron - **Précondition 3**
-**Effet : **Assigner bucheron - **Précondition 3**
+**Effet :** Couper du bois - **Préconditions 3,4,5**  
+**Effet :** Obtenir du bois raffiné - **Préconditions 2,3**  
+**Effet :** Construire une maison - **Préconditions 1,3**  
+**Effet :** Stocker du bois - **Préconditions 2,3**  
+**Effet :** Désassigner bucheron - **Précondition 3**  
+**Effet :** Assigner bucheron - **Précondition 3**  
