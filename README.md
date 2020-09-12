@@ -24,7 +24,7 @@ Nous avons donc gardé ce switch par soucis de temps.
 
 ## GOAP
 
-**Objectif : **Construire une maison
+**Objectif :**Construire une maison
 
 **Précondition 1 : **Avoir du bois raffiné
 **Précondition 2 : **Avoir du bois brut
