@@ -11,14 +11,14 @@ private:
 	std::vector<Effect*> effects;
 	int m_cost;
 public:
-	Action() : m_name("default"), preconditions(), effects(), m_cost(0)  {}
-	Action(std::string name, int cost) : m_name(name), m_cost(cost), preconditions(), effects() {}
-	void AddPrecondition(Precondition* precond) { preconditions.push_back(precond); }
-	void AddEffect(Effect* eff) { effects.push_back(eff); }
-	int GetCost() const { return m_cost; }
-	std::vector<Precondition*> GetPrecontionList() const { return preconditions; }
-	std::vector<Effect*> GetEffectList() const { return effects; }
-	~Action() { preconditions.clear(); effects.clear(); }
+	Action();
+	Action(std::string name, int cost);
+	void AddPrecondition(Precondition* precond);
+	void AddEffect(Effect* eff);
+	int GetCost() const;
+	std::vector<Precondition*> GetPrecontionList() const;
+	std::vector<Effect*> GetEffectList() const;
+	~Action();
 
 };
 
