@@ -1,6 +1,6 @@
-#IA Pour Les Jeux Vidéo
+# IA Pour Les Jeux Vidéo
 
-##State Machine
+## State Machine
 
 Machine à état de bucheron, pour récolter et raffiner du bois, ainsi que construire des maisons.
 Positions X Y de la forêt, le stock et la menuiserie.
@@ -9,9 +9,9 @@ Etats d'**Idle**, **Déplacement** (pour stocker et raffiner), **Stockage**, **F
 **_Substate Machine_** pour construire des maisons.
 Inputs en paramètre qui ont été testés : **200, 2, 2, 2, 4, 4, 6, 6**
 
-###Debug 
+### Debug 
 
-####Déplacement
+#### Déplacement
 
 A cause des positions en float, l'IA peut parfois dépasser la position de destination.
 Ce bug est aléatoire et ne survient pas tout le temps.
