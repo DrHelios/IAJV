@@ -16,13 +16,13 @@ Inputs en paramètre qui ont été testés : **200, 2, 2, 2, 4, 4, 6, 6**
 A cause des positions en float, l'IA peut parfois dépasser la position de destination.
 Ce bug est aléatoire et ne survient pas tout le temps.
 
-####Fonctions Génériques
+#### Fonctions Génériques
 
 Pour le traitement des cas dans la State Machine (Idle, Move, Etc.), nous avons utilisé un **Switch**
 plutôt que par une **Méthode Générique** car cela nous posait problème avec le reste de l'implémentation.
 Nous avons donc gardé ce switch par soucis de temps.
 
-##GOAP
+## GOAP
 
 **Objectif :** Construire une maison
 
